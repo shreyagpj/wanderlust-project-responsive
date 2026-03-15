@@ -1,0 +1,45 @@
+<%- layout("layouts/boilerplate") -%>
+<body>
+    <% if (error && error.length) { %>
+  <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+    <%= error %>
+    <button type="button" 
+            class="btn-close" 
+            data-bs-dismiss="alert" 
+            aria-label="Close">
+    </button>
+  </div>
+<% } %>
+  <h2 class="heading">Sign Up for Wanderlust</h2>
+  <form
+    method="post"
+    action="/signup"
+    class="col-8 offset-2 needs-validation"
+    novalidate
+  >
+    <div>
+      <label class="form-label" for="email">Enter email: </label>
+      <input class="form-control mb-1" name="email" type="email" required />
+      <div class="valid-feedback">Looks good !</div>
+      <br />
+    </div>
+    <div>
+      <label class="form-label" for="username">Enter username: </label>
+      <input class="form-control mb-1" name="username" type="text" required />
+      <div class="valid-feedback">Looks good !</div>
+      <br />
+    </div>
+    <div>
+      <label class="form-label" for="password">Enter password: </label>
+      <input
+        class="form-control mb-1"
+        name="password"
+        type="password"
+        required
+      />
+      <div class="valid-feedback">Looks good !</div>
+      <br />
+    </div>
+    <button class="btn btn-dark mb-5 save-changes offset-5">Sign Up</button>
+  </form>
+</body>

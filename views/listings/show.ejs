@@ -1,0 +1,164 @@
+<%- layout("layouts/boilerplate") -%>
+
+    <body>
+        <%- include("../includes/error.ejs")
+    -%>
+        <h2 class="listing-details show-title offset-2 ">
+            <%=listing.title%>
+        </h2>
+        <div class="show-details col-10 mx-auto mb-5">
+            <img src="<%=listing.image.url%>" alt="<%=listing.title%> image" class="show-img offset-2">
+            <div>
+                <p class="show-text offset-1"><b class="show-heading">Description</b><br>
+                    <%=listing.description%>
+                </p>
+            </div>
+
+
+            <div>
+                <p class="show-text offset-1"><b class="show-heading">Price: </b>
+                    &#8377;<%=listing.price.toLocaleString("en-IN")%>/night
+                </p>
+            </div>
+            <div>
+                <p class="show-text offset-1"><b class="show-heading">Location: </b>
+                    <%=listing.location%>, <%=listing.country%>
+                </p>
+            </div>
+            <div>
+                <p class="show-text offset-1"><b class="show-heading">Reach out to: </b><br>
+                    <%=listing.owner.email%> for more details
+                </p>
+            </div>
+            <% if(user && listing.owner._id.equals(user._id)){%>
+                <div class="d-flex offset-1 mt-5 mb-5">
+                <a href="/listings/<%=listing._id%>/edit" class="btn btn-dark me-3">
+                    Edit this Listing
+                </a>
+
+                <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
+                    <button class="btn btn-dark show-delete">
+                        Delete this Listing
+                    </button>
+                </form>
+                <!-- <%=listing.owner%>
+                <%=user%> -->
+            </div>
+            <%}%>
+                
+            
+            
+        </div>
+        <br>
+        <hr>
+        <br>
+        <br>
+<div class="offset-2"><h2 class="show-heading mx-auto">Where you'll be staying</h2>
+<div id="map"></div>
+         </div>
+         <hr>
+
+        <%if(user){%>
+            <div class="mb-5 mt-5">
+            <h2 class="show-title offset-2">Leave a Review</h2>
+            <form class="col-8 offset-2 needs-validation" method="POST" action="/listings/<%=listing._id%>/review"
+                novalidate>
+                <!-- <label for="review[rating]" class="form-label">Rating:</label>
+                <select class="form-select rating" required name="review[rating]">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5" selected>5</option>
+                </select> -->
+                <!-- --------------- -->
+                <fieldset class="starability-slot">
+  <legend>Rating:</legend>
+  <!-- <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." /> -->
+  <input type="radio" id="first-rate1" name="review[rating]" value="1"/>
+  <label for="first-rate1" title="Terrible">1 star</label>
+  <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+  <label for="first-rate2" title="Not good">2 stars</label>
+  <input type="radio" id="first-rate3" name="review[rating]" value="3" checked/>
+  <label for="first-rate3" title="Average">3 stars</label>
+  <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+  <label for="first-rate4" title="Very good">4 stars</label>
+  <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+  <label for="first-rate5" title="Amazing">5 stars</label>
+</fieldset>
+ <!-- ------ -->
+                <div>
+                    <label for="review[comment]" class="form-label">Comments: </label>
+                    <br>
+                    <textarea name="review[comment]" class="form-control" placeholder="Enter your review here..."
+                        required></textarea>
+                    <div class="invalid-feedback">Please write your review</div>
+                </div>
+
+                <br>
+                <button class="btn btn-dark">Submit</button>
+            </form>
+        </div>
+        <%}%>
+
+        <!-- add the map here  -->
+         
+    
+        <!-- <div>
+            <ul>
+                <%for(let review of listing.reviews){%>
+                    <li>
+                        <%=review.comment%>, <%=review.rating%> stars
+                    </li>
+                    <%}%>
+            </ul>
+        </div> -->
+        <% if(listing.reviews.length){%><h3>All Reviews</h3>
+        <div class="offset-2">
+            <%for(let review of listing.reviews){%>
+        <div class="card mb-5 me-2 ms-2 d-inline-flex review-card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title"><%=review.author.username%></h5>
+                <p class="starability-result" data-rating="<%=review.rating%>">
+  </p>
+                <p class="card-text"><%=review.comment%></p>
+                <% if(review && user && review.author && review.author._id.equals(user._id)){%>
+                    <form method="POST" action="/listings/<%=listing._id%>/review/<%=review._id%>?_method=DELETE">
+                    <button class="btn btn-outline-danger review-dlt">Delete</button>
+                </form>
+                <%}%>
+            </div>
+        </div>
+        <%}%>
+        </div>
+        <%}%>
+        
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+        <script>
+   let data = <%- JSON.stringify(listing.geometry.coordinates) %>;
+
+let lat = data[1];
+let lon = data[0];
+
+var map = L.map('map').setView([lat, lon], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+var marker = L.marker([lat, lon], {
+    icon: L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32]
+    })
+}).addTo(map);
+
+marker.bindPopup("Our location");
+
+</script>
+
+    </body>

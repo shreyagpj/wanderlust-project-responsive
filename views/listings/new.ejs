@@ -1,0 +1,102 @@
+<%- layout("layouts/boilerplate") -%>
+
+<body>
+  <h2 class="heading">Add new Location</h2>
+  <form
+    method="post"
+    action="/listings"
+    novalidate
+    class="col-8 offset-2 needs-validation"
+    enctype="multipart/form-data"
+  >
+    <div>
+      <label class="form-label" for="listing[title]">Enter title: </label>
+      <input
+        class="form-control mb-2"
+        name="listing[title]"
+        placeholder="Enter title"
+        required
+      />
+      <div class="invalid-feedback">Please enter the title</div>
+      <br />
+    </div>
+
+    <div>
+      <label class="form-label" for="listing[description]"
+        >Enter description:
+      </label>
+      <textarea
+        class="form-control mb-2"
+        name="listing[description]"
+        placeholder="Enter description"
+        required
+      ></textarea>
+      <div class="invalid-feedback">Please enter a description</div>
+      <br />
+    </div>
+
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <select
+        id="category"
+        name="listing[category]"
+        class="form-select"
+        required
+      >
+        <option value="Beaches">Beaches</option>
+        <option value="Mountains">Mountains</option>
+        <option value="Forest">Forest</option>
+        <option value="Camping">Camping</option>
+        <option value="Arctic">Arctic</option>
+        <option value="Cities">Cities</option>
+        <option value="Castles">Castles</option>
+        <option value="Wellness">Wellness</option>
+        <option value="Luxury">Luxury</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="listing[image]" class="form-label">Choose file</label>
+      <input class="form-control" type="file" name="listing[image]" />
+    </div>
+
+    <div>
+      <label class="form-label" for="listing[price]">Enter price: </label>
+      <input
+        class="form-control mb-2"
+        name="listing[price]"
+        placeholder="Enter price"
+        type="number"
+        required
+      />
+      <div class="invalid-feedback">Please enter the price</div>
+      <br />
+    </div>
+
+    <div>
+      <label class="form-label" for="listing[location]">Enter location: </label>
+      <input
+        class="form-control mb-2"
+        name="listing[location]"
+        placeholder="Enter location"
+        required
+      />
+      <div class="invalid-feedback">Please enter the location</div>
+      <br />
+    </div>
+
+    <div>
+      <label class="form-label" for="listing[country]">Enter country: </label>
+      <input
+        class="form-control mb-2"
+        name="listing[country]"
+        placeholder="Enter country"
+        required
+      />
+      <div class="invalid-feedback">Please enter the country</div>
+    </div>
+
+    <br />
+    <button class="btn btn-dark mb-5 add-btn">Add Listing</button>
+  </form>
+</body>
