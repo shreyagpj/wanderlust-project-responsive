@@ -21,6 +21,10 @@ function validateListing(req, res, next) {
   }
 }
 
+router.get("/", (req, res)=>{
+  res.redirect("/listings");
+});
+
 router
   .route("/listings")
   .get(asyncWrap(listingController.getAllListings))
